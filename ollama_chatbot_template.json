@@ -1,0 +1,90 @@
+{
+  "name": "Ollama AI Chat Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "4a5c7906-6085-403f-83da-3251f646c91e",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [-304, 0],
+      "webhookId": "REPLACE_WEBHOOK_ID"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful and professional AI assistant.\nRespond clearly, concisely, and accurately.\nIf you do not know an answer, say so honestly.\nUse a friendly but professional tone.\n\nYou can help the user with:\n- Answering general questions\n- Explaining technical concepts\n- Writing content\n- Analyzing problems\n- Providing practical advice\n\nAdapt your responses to the user's context and needs."
+        }
+      },
+      "id": "6de73f0c-2d11-4cfb-ba90-f271012a5441",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [-80, 0]
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:1b",
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "id": "9008c02c-c46c-472a-bebe-64c4b9980318",
+      "name": "Ollama Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [-160, 192],
+      "credentials": {
+        "ollamaApi": {
+          "id": "REPLACE_CREDENTIAL_ID",
+          "name": "REPLACE_CREDENTIAL_NAME"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "92848db7-a74c-4a78-ae59-b9150d9f1221",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.2,
+      "position": [32, 224]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {"node": "AI Agent", "type": "main", "index": 0}
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {"node": "AI Agent", "type": "ai_languageModel", "index": 0}
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {"node": "AI Agent", "type": "ai_memory", "index": 0}
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "REPLACE_VERSION_ID",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "REPLACE_INSTANCE_ID"
+  },
+  "id": "R78fvSvZO4FeDM8j",
+  "tags": []
+}
